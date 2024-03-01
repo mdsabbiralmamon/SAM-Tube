@@ -8,6 +8,7 @@
 
 const buttonContainer = document.getElementById('buttonContainer');
 const cardContainer = document.getElementById('cardContainer');
+const notFound = document.getElementById('notFound');
 let selectedCategory = 1000;
 
 (() => {
@@ -30,6 +31,12 @@ const fetchedDataByCategories = (idOfData) => {
         .then((res) => res.json())
         .then(({data}) => {
             cardContainer.innerHTML = ''
+            if(data.length === 0){
+                notFound.classList.remove('hidden');
+            }
+            else{
+                notFound.classList.add('hidden');
+            }
             data.forEach((fetchedData) => {
                 console.log(fetchedData);
                 console.log(fetchedData.authors[0].verified);
