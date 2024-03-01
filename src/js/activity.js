@@ -27,11 +27,12 @@ const fetchedDataByCategories = (idOfData) => {
     fetch(`https://openapi.programming-hero.com/api/videos/category/${idOfData}`)
         .then((res) => res.json())
         .then(({data}) => {
+            cardContainer.innerHTML = ''
             data.forEach((fetchedData) => {
                 const newCard = document.createElement('div');
                 newCard.innerHTML = `
                 <div class="card card-compact bg-base-100 shadow-xl">
-                    <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
+                    <figure><img src='${fetchedData.thumbnail}'
                         alt="Shoes" /></figure>
                     <div class="card-body">
                         <h2 class="card-title">Shoes!</h2>
