@@ -8,6 +8,7 @@
 
 const buttonContainer = document.getElementById('buttonContainer');
 const cardContainer = document.getElementById('cardContainer');
+let selectedCategory = 1000;
 
 (() => {
     fetch('https://openapi.programming-hero.com/api/videos/categories')
@@ -24,6 +25,7 @@ const cardContainer = document.getElementById('cardContainer');
 })();
 
 const fetchedDataByCategories = (idOfData) => {
+    selectedCategory = idOfData;
     fetch(`https://openapi.programming-hero.com/api/videos/category/${idOfData}`)
         .then((res) => res.json())
         .then(({data}) => {
@@ -31,7 +33,7 @@ const fetchedDataByCategories = (idOfData) => {
             data.forEach((fetchedData) => {
                 const newCard = document.createElement('div');
                 newCard.innerHTML = `
-                <div class="card card-compact bg-base-100 shadow-xl">
+                <div class="card h-96 card-compact bg-base-100 shadow-xl">
                     <figure><img src='${fetchedData.thumbnail}'
                 alt="Shoes" /></figure>
                     <div class="card-body flex">
@@ -43,7 +45,7 @@ const fetchedDataByCategories = (idOfData) => {
                                 <h2 class="card-title">${fetchedData.title}</h2>
                             </div>
                             <div class="name flex gap-3">
-                                <p>Awlad Hossain</p>
+                                <h2>Awlad Hossain<h2>
                                 <div class="verifyContainer">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                         <g clip-path="url(#clip0_11_34)">
@@ -69,3 +71,5 @@ const fetchedDataByCategories = (idOfData) => {
             })
         })
 }
+
+fetchedDataByCategories(selectedCategory);
