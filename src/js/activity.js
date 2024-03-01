@@ -17,13 +17,22 @@ let selectedCategory = 1000;
         .then(({data}) => {
             data.forEach((fetchedData) => {
                 const newBtn = document.createElement('button');
-                newBtn.classList.add('btn', 'mx-2', 'btn-ghost', 'text-lg');
+                newBtn.classList.add('category-btn', 'btn', 'mx-2', 'text-lg');
                 newBtn.innerText = `${fetchedData.category}`;
-                newBtn.addEventListener('click', () => fetchedDataByCategories(fetchedData.category_id));
+                newBtn.addEventListener('click', () => {
+                    fetchedDataByCategories(fetchedData.category_id);
+                    const allButtons = document.querySelectorAll('.category-btn');
+                    for(const btn of allButtons){
+                        btn.classList.remove('bg-red-600', 'text-white');
+                    }
+                    newBtn.classList.add('bg-red-600', 'text-white');
+                });
                 buttonContainer.appendChild(newBtn);
             })
         })
 })();
+
+
 
 const fetchedDataByCategories = (idOfData) => {
     selectedCategory = idOfData;
@@ -38,8 +47,6 @@ const fetchedDataByCategories = (idOfData) => {
                 notFound.classList.add('hidden');
             }
             data.forEach((fetchedData) => {
-                console.log(fetchedData);
-                console.log(fetchedData.authors[0].verified);
                 let verifiedBadge = '';
                 if(fetchedData.authors[0].verified === true){
                     verifiedBadge =`<img src="../src/images/varified.png" alt="">`
