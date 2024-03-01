@@ -9,7 +9,14 @@
 const buttonContainer = document.getElementById('buttonContainer');
 const cardContainer = document.getElementById('cardContainer');
 const notFound = document.getElementById('notFound');
+const sortBtn = document.getElementById('sort-btn');
 let selectedCategory = 1000;
+let sortByView = false;
+
+sortBtn.addEventListener('click', () =>{
+    sortByView =true;
+    fetchedDataByCategories(selectedCategory, sortByView);
+});
 
 (() => {
     fetch('https://openapi.programming-hero.com/api/videos/categories')
@@ -34,11 +41,20 @@ let selectedCategory = 1000;
 
 
 
-const fetchedDataByCategories = (idOfData) => {
+const fetchedDataByCategories = (idOfData, sortByView) => {
     selectedCategory = idOfData;
     fetch(`https://openapi.programming-hero.com/api/videos/category/${idOfData}`)
         .then((res) => res.json())
         .then(({data}) => {
+            if(sortByView){
+                data.sort((a,b) => {
+                    const totalViewFirst = a.others?.views;
+                    const totalViewSecond = b.others?.views;
+                    const totalViewFirstNumber = parseFloat(totalViewFirst.replace("k", '')) || 0;
+                    const totalViewSecondNumber = parseFloat(totalViewSecond.replace("k", '')) || 0;
+                    return totalViewSecondNumber -totalViewFirstNumber;
+                })
+            }
             cardContainer.innerHTML = ''
             if(data.length === 0){
                 notFound.classList.remove('hidden');
@@ -80,4 +96,4 @@ const fetchedDataByCategories = (idOfData) => {
         })
 }
 
-fetchedDataByCategories(selectedCategory);
+fetchedDataByCategories(selectedCategory, sortByView);
